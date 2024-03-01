@@ -1,23 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useMemo} from "react";
+import * as web3 from '@solana/web3.js'
+import {WalletModalProvider} from '@solana/wallet-adapter-react-ui'
+import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react";
+import Ping from "./Ping";
+require('@solana/wallet-adapter-react-ui/styles.css')
 
 function App() {
+  const endpoint = web3.clusterApiUrl("devnet")
+  const wallets = useMemo(()=> [], [])
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ConnectionProvider endpoint={endpoint}>
+        <WalletProvider wallets={wallets} >
+      <WalletModalProvider >
+        <Ping />
+      </WalletModalProvider>
+      </WalletProvider>
+      </ConnectionProvider>
+      
     </div>
   );
 }
